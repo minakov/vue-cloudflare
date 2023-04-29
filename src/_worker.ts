@@ -1,4 +1,5 @@
 import { renderToString, type SSRContext } from 'vue/server-renderer'
+import { type Fetcher, type ExportedHandler, Response } from '@cloudflare/workers-types'
 import { createApp } from './main'
 
 interface Env {
@@ -50,10 +51,10 @@ function renderPreloadLink(file: string): string {
   }
 }
 
-const handler: ExportedHandler = {
-  async fetch(request: Request, env: Env) {
+const handler: ExportedHandler<Env> = {
+  async fetch(request, env) {
     const template = await (await env.ASSETS.fetch('http://local/template.txt')).text()
-    const manifest = await (await env.ASSETS.fetch('http://local/ssr-manifest.json')).text()
+    const manifest = await (await env.ASSETS.fetch('http://local/ssr-manifest.json')).json<Record<string, string[]>>()
 
     let response: Response | undefined;
     try {
