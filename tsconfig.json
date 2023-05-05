@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
     "src/**/*",
@@ -14,11 +14,12 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "types": [
+      "vite/client",
+      "@cloudflare/workers-types"
+    ],
   },
-  "types": [
-    "@cloudflare/workers-types"
-  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
